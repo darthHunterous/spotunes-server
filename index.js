@@ -1,3 +1,5 @@
+const { round, floor } = Math;
+
 const Spotify = require('node-spotify-api');
 const express = require('express');
 
@@ -11,6 +13,12 @@ const spotify = new Spotify({
   secret: process.env.SPOTIFY_CLIENT_SECRET
 });
 
+const convertMicrosecondToMinuteSecondString = (length) => {
+  const totalSeconds = round(length / 1000);
+
+  return `${floor(totalSeconds / 60)}:${totalSeconds % 60}`
+}
+
 app.get('/api/spotify/search', (req, res) => {
   spotify
     .search({
@@ -23,9 +31,13 @@ app.get('/api/spotify/search', (req, res) => {
 
       const data = tracksSearchResult.map((element) => {
         return {
-          albumCover: element.album.images[0].url,
+          spotifyID: element.id,
+          title: element.name,
+          length_string: convertMicrosecondToMinuteSecondString(element.duration_ms),
+          length_ms: element.duration_ms,
           artist: element.artists[0].name,
-          trackTitle: element.name
+          album: element.album.name,
+          albumCover: element.album.images[0].url,
         }
       });
 
