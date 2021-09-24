@@ -4,6 +4,8 @@
   "description": "Spotunes back-end services\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Cweb-app back-end\u001b[3~\u001b[ services",
   "main": "index.js",
   "scripts": {
+    "development": "cross-env NODE_ENV=development nodemon index.js",
+    "start": "cross-env NODE_ENV=production node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "darthHunterous",
@@ -12,5 +14,8 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "node-spotify-api": "^1.1.1"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }
