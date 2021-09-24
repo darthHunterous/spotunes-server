@@ -6,13 +6,13 @@ const express = require('express');
 
 const app = express();
 const PORT = process.env.PORT || 8888;
-const enviroment = process.env.NODE_ENV;
+const environment = process.env.NODE_ENV;
 
 if (environment === 'development') {
   require('dotenv').config();
 }
 
-const front_address = enviroment === 'production' ? 'https://spotunes.netlify.app/' : `http://localhost:3000`
+const front_address = environment === 'production' ? 'https://spotunes.netlify.app/' : `http://localhost:3000`
 
 const spotify = new Spotify({
   id: process.env.SPOTIFY_CLIENT_ID,
