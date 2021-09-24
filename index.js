@@ -6,7 +6,10 @@ const express = require('express');
 require('dotenv').config();
 
 const app = express();
-const PORT = 8888
+const PORT = process.env.PORT || 8888;
+const enviroment = process.env.NODE_ENV;
+
+const front_address = enviroment == 'production' ? 'https://spotunes.netlify.app/' : `http://localhost:3000`
 
 const spotify = new Spotify({
   id: process.env.SPOTIFY_CLIENT_ID,
@@ -41,7 +44,7 @@ app.get('/api/spotify/search', (req, res) => {
         }
       });
 
-      res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+      res.header('Access-Control-Allow-Origin', front_address);
       res.send(data);
     })
     .catch(function (err) {
