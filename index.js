@@ -12,7 +12,7 @@ if (environment === 'development') {
   require('dotenv').config();
 }
 
-const front_address = environment === 'production' ? 'spotunes.netlify.app' : `http://localhost:3000`
+const front_address = environment === 'production' ? 'https://spotunes.netlify.app' : `http://localhost:3000`
 
 const spotify = new Spotify({
   id: process.env.SPOTIFY_CLIENT_ID,
