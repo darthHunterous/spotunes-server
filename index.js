@@ -3,13 +3,16 @@ const { round, floor } = Math;
 const Spotify = require('node-spotify-api');
 const express = require('express');
 
-require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 8888;
 const enviroment = process.env.NODE_ENV;
 
-const front_address = enviroment == 'production' ? 'https://spotunes.netlify.app/' : `http://localhost:3000`
+if (environment === 'development') {
+  require('dotenv').config();
+}
+
+const front_address = enviroment === 'production' ? 'https://spotunes.netlify.app/' : `http://localhost:3000`
 
 const spotify = new Spotify({
   id: process.env.SPOTIFY_CLIENT_ID,
