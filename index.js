@@ -26,6 +26,14 @@ const convertMicrosecondToMinuteSecondString = (length) => {
 }
 
 app.get('/api/spotify/search', (req, res) => {
+  if (!req.query.title) {
+    res.header('Access-Control-Allow-Origin', front_address);
+    res.status(422);
+    res.send('Missing required parameter <title>');
+
+    return;
+  }
+
   spotify
     .search({
       type: 'track',
