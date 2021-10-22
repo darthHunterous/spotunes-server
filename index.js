@@ -52,6 +52,8 @@ app.get('/api/spotify/search', (req, res) => {
           artist: element.artists[0].name,
           album: element.album.name,
           albumCover: element.album.images[0].url,
+          albumID: element.album.id,
+          artistID: element.artists[0].id
         }
       });
 
