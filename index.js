@@ -26,39 +26,59 @@ const convertMicrosecondToMinuteSecondString = (length) => {
 }
 
 app.get('/api/spotify/search', (req, res) => {
-  if (!req.query.title) {
+  if (!req.query.name) {
     res.header('Access-Control-Allow-Origin', front_address);
     res.status(422);
-    res.send('Missing required parameter <title>');
+    res.send('Missing required parameter <name>');
+
+    return;
+  }
+
+  if (!req.query.type) {
+    res.header('Access-Control-Allow-Origin', front_address);
+    res.status(422);
+    res.send('Missing required parameter <type>');
 
     return;
   }
 
   spotify
     .search({
-      type: 'track',
-      query: req.query.title,
+      type: req.query.type,
+      query: req.query.name,
       limit: 10
     })
     .then(function (response) {
-      const tracksSearchResult = response.tracks.items;
-
-      const data = tracksSearchResult.map((element) => {
-        return {
-          spotifyID: element.id,
-          title: element.name,
-          length_string: convertMicrosecondToMinuteSecondString(element.duration_ms),
-          length_ms: element.duration_ms,
-          artist: element.artists[0].name,
-          album: element.album.name,
-          albumCover: element.album.images[0].url,
-          albumID: element.album.id,
-          artistID: element.artists[0].id
-        }
-      });
-
-      res.header('Access-Control-Allow-Origin', front_address);
-      res.send(data);
+      if (req.query.type === 'track') {
+        const searchResult = response.tracks.items;
+        const data = searchResult.map((element) => {
+          return {
+            spotifyID: element.id,
+            title: element.name,
+            length_string: convertMicrosecondToMinuteSecondString(element.duration_ms),
+            length_ms: element.duration_ms,
+            artist: element.artists[0].name,
+            album: element.album.name,
+            albumCover: element.album.images[0].url,
+            albumID: element.album.id,
+            artistID: element.artists[0].id
+          }
+        });
+        res.header('Access-Control-Allow-Origin', front_address);
+        res.send(data);
+      }
+      else if (req.query.type === 'artist') {
+        const searchResult = response.artists.items;
+        const data = searchResult.map((element) => {
+          return {
+            artistGenres: element.genres,
+            artistID: element.id,
+            artistImageURL: element.images.length > 0 ? element.images[0].url : null
+          }
+        });
+        res.header('Access-Control-Allow-Origin', front_address);
+        res.send(data);
+      }
     })
     .catch(function (err) {
       console.log(err);
